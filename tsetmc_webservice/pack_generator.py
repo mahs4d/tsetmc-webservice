@@ -207,14 +207,6 @@ def generate_pack(client: WebserviceClient, from_date: date, to_date: date, out_
     cur += 1
     print(f'{cur}/{total}')
     try:
-        index_b2 = _iterate_date(from_date, to_date, client.index_b2)
-        _save_data_to_csv(index_b2, 'index_b2', out_dir)
-    except Exception as ex:
-        print(ex)
-
-    cur += 1
-    print(f'{cur}/{total}')
-    try:
         trade_one_day = _iterate_date(from_date, to_date, _iterate_flows, fl_func=client.trade_one_day)
         _save_data_to_csv(trade_one_day, 'trade_one_day', out_dir)
     except Exception as ex:
@@ -275,6 +267,7 @@ def generate_pack(client: WebserviceClient, from_date: date, to_date: date, out_
 def _iterate_date(from_date, to_date, func, **kwargs):
     arr = []
     for d in pd.date_range(from_date, to_date):
+        print(f'--> {d}')
         try:
             temp_arr = func(date=d, **kwargs)
             for t in temp_arr:
